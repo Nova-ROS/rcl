@@ -15,7 +15,7 @@
 #ifndef IMPL__PARSE_H_
 #define IMPL__PARSE_H_
 
-#include <yaml.h>
+#include "yaml/yaml.h"
 
 #include "rcutils/allocator.h"
 #include "rcutils/macros.h"

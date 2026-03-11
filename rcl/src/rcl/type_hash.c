@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 
-#include <yaml.h>
+#include "yaml/yaml.h"
 
 #include "rcl/allocator.h"
 #include "rcl/error_handling.h"

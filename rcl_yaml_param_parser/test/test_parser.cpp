@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <yaml.h>
+#include "yaml/yaml.h"
 
 #include <string>
 #include <vector>

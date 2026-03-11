@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <yaml.h>
+#include "yaml/yaml.h"
 
 #include "rcutils/allocator.h"
 #include "rcutils/error_handling.h"

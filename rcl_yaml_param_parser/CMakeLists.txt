@@ -6,8 +6,6 @@ find_package(ament_cmake_ros REQUIRED)
 find_package(ament_cmake_gen_version_h REQUIRED)
 find_package(rcutils REQUIRED)
 find_package(rmw REQUIRED)
-find_package(libyaml_vendor REQUIRED)
-find_package(yaml REQUIRED)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -30,16 +28,17 @@ add_library(
   src/parse.c
   src/parser.c
   src/yaml_variant.c
+  src/impl/yaml/yaml.c
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 target_link_libraries(${PROJECT_NAME} PUBLIC
   rcutils::rcutils
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
   rmw::rmw
-  yaml
 )
 
 # Set the visibility to hidden by default if possible
@@ -121,7 +120,6 @@ if(BUILD_TESTING)
       mimick
       osrf_testing_tools_cpp::memory_tools
       rcutils::rcutils
-      yaml
     )
   endif()
 
@@ -135,7 +133,6 @@ if(BUILD_TESTING)
       mimick
       osrf_testing_tools_cpp::memory_tools
       rcutils::rcutils
-      yaml
     )
     target_compile_definitions(test_parser PUBLIC RCUTILS_ENABLE_FAULT_INJECTION)
   endif()

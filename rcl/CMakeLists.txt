@@ -5,7 +5,6 @@ project(rcl)
 find_package(ament_cmake_ros REQUIRED)
 find_package(ament_cmake_gen_version_h REQUIRED)
 
-find_package(libyaml_vendor REQUIRED)
 find_package(rcl_interfaces REQUIRED)
 find_package(rcl_logging_interface REQUIRED)
 find_package(rcl_yaml_param_parser REQUIRED)
@@ -16,7 +15,7 @@ find_package(rosidl_runtime_c REQUIRED)
 find_package(service_msgs REQUIRED)
 find_package(tracetools REQUIRED)
 find_package(type_description_interfaces REQUIRED)
-find_package(yaml REQUIRED)
+
 
 include(cmake/rcl_set_symbol_visibility_hidden.cmake)
 include(cmake/get_default_rcl_logging_implementation.cmake)
@@ -82,6 +81,8 @@ add_library(${PROJECT_NAME} ${${PROJECT_NAME}_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../rcl_yaml_param_parser/src>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../rcl_yaml_param_parser/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 target_link_libraries(${PROJECT_NAME} PUBLIC
   # TODO(clalancette): rcl_interfaces should be PRIVATE, but downstream depends on it for now
@@ -100,7 +101,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   ${RCL_LOGGING_IMPL}::${RCL_LOGGING_IMPL}
   ${service_msgs_TARGETS}
   tracetools::tracetools
-  yaml
 )
 
 # Allow configuring the default discovery range

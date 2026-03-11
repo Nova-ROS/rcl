@@ -14,7 +14,7 @@
 
 #include <gtest/gtest.h>
 
-#include <yaml.h>
+#include "yaml/yaml.h"
 
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcl_yaml_param_parser/parser.h"
