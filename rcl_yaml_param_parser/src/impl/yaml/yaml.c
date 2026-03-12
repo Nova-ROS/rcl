@@ -15,7 +15,7 @@
 // Custom YAML parser/emitter implementation replacing libyaml dependency.
 // Supports the subset of YAML used by rcl_yaml_param_parser and rcl.
 
-#include "yaml.h"
+#include "yaml/yaml.h"
 
 #include <ctype.h>
 #include <errno.h>
@@ -774,7 +774,7 @@ void yaml_emitter_delete(yaml_emitter_t * emitter)
 
 void yaml_emitter_set_output(
   yaml_emitter_t * emitter,
-  int (*handler)(void *, uint8_t *, size_t),
+  yaml_write_handler_t handler,
   void * data)
 {
   if (emitter == NULL) {
@@ -794,7 +794,7 @@ void yaml_emitter_set_encoding(yaml_emitter_t * emitter, yaml_encoding_t encodin
 void yaml_emitter_set_width(yaml_emitter_t * emitter, int width)
 {
   if (emitter != NULL) {
-    emitter->line_length = width;
+    emitter->best_width = width;
   }
 }
 
@@ -906,20 +906,31 @@ int yaml_stream_end_event_initialize(yaml_event_t * event)
 
 int yaml_document_start_event_initialize(
   yaml_event_t * event,
-  yaml_char_t * version_directive,
-  yaml_char_t ** tag_directives,
-  int tags_amount,
+  yaml_version_directive_t * version_directive,
+  yaml_tag_directive_t * tag_directives_start,
+  yaml_tag_directive_t * tag_directives_end,
   int implicit)
 {
   (void)version_directive;
-  (void)tag_directives;
-  (void)tags_amount;
+  (void)tag_directives_start;
+  (void)tag_directives_end;
   if (event == NULL) {
     return 0;
   }
   memset(event, 0, sizeof(yaml_event_t));
   event->type = YAML_DOCUMENT_START_EVENT;
-  event->data.document_start.implicit = (bool)implicit;
+  event->data.document_start.implicit = implicit;
+  return 1;
+}
+
+int yaml_alias_event_initialize(yaml_event_t * event, yaml_char_t * anchor)
+{
+  if (event == NULL) {
+    return 0;
+  }
+  memset(event, 0, sizeof(yaml_event_t));
+  event->type = YAML_ALIAS_EVENT;
+  event->data.alias.anchor = anchor;
   return 1;
 }
 
